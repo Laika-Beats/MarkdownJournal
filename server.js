@@ -10,11 +10,11 @@ app.get("/", (req, res) => {
   const entries = [
     {
       title: "Test Article",
-      createdAt: Date.now(),
+      createdAt: new Date(),
       description: "Test Description",
     },
   ];
-  res.render("index", { entries: entires });
+  res.render("entries/index", { entries: entries });
 });
 
 app.listen(5000);
