@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="mb-4">Journal Entries</h1>
+      <h1 class="mb-4">My Journal</h1>
       <a href="/entries/new" class="btn btn-success">New Entry</a>
 
       <% entries.forEach(entry => { %>
@@ -27,6 +27,8 @@
           <a href="/entries/<%= entry.slug %>" class="btn btn-primary"
             >Read More</a
           >
+          <a href="entries/edit/<%= entry.id %>" class="btn btn-info">Edit</a>
+
           <form
             action="/entries/<%= entry.id %>?_method=DELETE"
             method="POST"

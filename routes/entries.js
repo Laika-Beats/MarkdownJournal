@@ -17,24 +17,45 @@ router.get("/:slug", async (req, res) => {
   res.render("entries/show", { entry: entry });
 });
 
-router.post("/", async (req, res) => {
-  let entry = new Entry({
-    title: req.body.title,
-    description: req.body.description,
-    markdown: req.body.markdown,
-  });
-  try {
-    entry = await entry.save();
-    res.redirect(`/entries/${entry.id}`);
-  } catch (error) {
-    console.log(error);
-    res.render("entries/new", { entry: entry });
-  }
-});
+router.post(
+  "/",
+  async (req, res, next) => {
+    req.entry = new Entry();
+    next();
+  },
+  saveEntryAndRedirect("new")
+);
+
+router.put(
+  "/:id",
+  async (req, res, next) => {
+    req.entry = await Entry.findById(req.params.id);
+    next();
+  },
+  saveEntryAndRedirect("edit")
+);
+
+router.put("/:id", (req, res) => {});
 
 router.delete("/:id", async (req, res) => {
   await Entry.findByIdAndDelete(req.params.id);
   res.redirect("/");
 });
+
+function saveEntryAndRedirect(path) {
+  return async (req, res) => {
+    let entry = req.entry;
+    entry.title = req.body.title;
+    entry.description = req.body.description;
+    entry.markdown = req.body.markdown;
+    try {
+      entry = await entry.save();
+      res.redirect(`/entries/${entry.slug}`);
+    } catch (error) {
+      console.log(error);
+      res.render(`entries/${path}`, { entry: entry });
+    }
+  };
+}
 
 module.exports = router;
