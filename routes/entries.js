@@ -6,9 +6,11 @@ router.get("/new", (req, res) => {
   res.render("entries/new", { entry: new Entry() });
 });
 
-// router.get("/:id" (req, res) => {
-
-// })
+router.get("/:id", async (req, res) => {
+  const entry = await Entry.findById(req.params.id);
+  if (entry === null) res.redirect("/");
+  res.render("entries/show", { entry: entry });
+});
 
 router.post("/", async (req, res) => {
   let entry = new Entry({
