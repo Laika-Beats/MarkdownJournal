@@ -3,10 +3,16 @@ const mongoose = require("mongoose");
 const entryRouter = require("./routes/entries.js");
 const app = express();
 
-mongoose.connect("mongodb://localhost/journal", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://journal:journal@cluster0.xdav1.mongodb.net/journal?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => {
+    console.log("🌐🌐🌐 Connected to mongoDB 🌐🌐🌐");
+  }
+);
 
 app.set("view engine", "ejs");
 
@@ -24,4 +30,6 @@ app.get("/", (req, res) => {
   res.render("entries/index", { entries: entries });
 });
 
-app.listen(5000);
+app.listen(5000, () => {
+  console.log("🌎🌎🌎 Listening at localhost:5000 🌎🌎🌎");
+});
