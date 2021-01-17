@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const Entry = require("./models/entry");
 const entryRouter = require("./routes/entries.js");
+const methodOverride = require("method-override");
 const app = express();
 
 mongoose.connect(
@@ -8,6 +10,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   },
   () => {
     console.log("🌐🌐🌐 Connected to mongoDB 🌐🌐🌐");
@@ -17,16 +20,11 @@ mongoose.connect(
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
 app.use("/entries", entryRouter);
 
-app.get("/", (req, res) => {
-  const entries = [
-    {
-      title: "Test Article",
-      createdAt: new Date(),
-      description: "Test Description",
-    },
-  ];
+app.get("/", async (req, res) => {
+  const entries = await Entry.find().sort({ createdAt: "desc" });
   res.render("entries/index", { entries: entries });
 });
 

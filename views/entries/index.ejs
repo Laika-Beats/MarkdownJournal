@@ -24,6 +24,16 @@
             <%= entry.createdAt.toLocaleDateString() %>
           </div>
           <div class="card-text mb-2"><%= entry.description %></div>
+          <a href="/entries/<%= entry.slug %>" class="btn btn-primary"
+            >Read More</a
+          >
+          <form
+            action="/entries/<%= entry.id %>?_method=DELETE"
+            method="POST"
+            class="d-inline"
+          >
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
         </div>
       </div>
 

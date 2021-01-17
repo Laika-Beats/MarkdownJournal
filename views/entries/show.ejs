@@ -19,7 +19,7 @@
       </div>
       <a href="/" class="btn btn-secondary">All Journal Entries</a>
       <a href="/entries/edit/<%= entry.id %>" class="btn btn-info">Edit</a>
-      <div><%= entry.markdown %></div>
+      <div><%- entry.sanitizedHtml %></div>
     </div>
   </body>
 </html>
